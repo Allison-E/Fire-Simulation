@@ -1,4 +1,6 @@
-﻿Console.WriteLine("FIRE SIMULATION");
+﻿using System.Security.Cryptography;
+
+Console.WriteLine("FIRE SIMULATION");
 Console.WriteLine("================");
 Console.WriteLine("Press any key to go to the next time step, Enter to end simulation.");
 Console.WriteLine();
@@ -67,10 +69,11 @@ CellState Spread(CellState cellState, ICollection<CellState> neighbourStates)
 {
     if (neighbourStates.Any(state => state == CellState.Fire) && cellState == CellState.Tree)
     {
-        var updateBit = new Random().Next(101);
+        // Either 0 or 1.
+        var caughtFireBit = RandomNumberGenerator.GetInt32(2);
 
         // Tree caught fire by a chance of 50%.
-        if (updateBit > 25)
+        if (caughtFireBit == 1)
             return CellState.Fire;
     }
 

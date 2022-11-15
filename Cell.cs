@@ -1,4 +1,6 @@
-﻿namespace Fire_Simulation;
+﻿using System.Security.Cryptography;
+
+namespace Fire_Simulation;
 
 /// <summary>
 /// A cell in the grid which may be an empty site, tree or fire.
@@ -11,8 +13,8 @@ internal class Cell
     /// </summary>
     public Cell()
     {
-        var randomValue = new Random()
-            .Next(2);
+        var randomValue = RandomNumberGenerator.GetInt32(2);
+
         State = (CellState)randomValue;
     }
 
