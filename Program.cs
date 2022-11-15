@@ -1,7 +1,8 @@
 ﻿using System.Security.Cryptography;
 
-Console.WriteLine("FIRE SIMULATION");
-Console.WriteLine("================");
+Console.Title = "Fire Simulation";
+Console.WriteLine("\tFIRE SIMULATION");
+Console.WriteLine(new string('-', 31));
 Console.WriteLine("Press any key to go to the next time step, Enter to end simulation.");
 Console.WriteLine();
 
@@ -14,6 +15,12 @@ InitialiseDisplay();
 
 while (Console.ReadKey().Key != ConsoleKey.Enter)
 {
+    if (!forest.Cast<Cell>().Any(c => c.State == CellState.Fire))
+    {
+        Console.WriteLine("\r\n\r\nSimulation finished.");
+        break;
+    }
+
     Cell[,] newForest = new Cell[h, w];
 
     // Update cells.
