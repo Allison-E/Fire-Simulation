@@ -12,6 +12,8 @@ InitialiseDisplay();
 
 while (Console.ReadKey().Key != ConsoleKey.Enter)
 {
+    Cell[,] newForest = new Cell[h, w];
+
     // Update cells.
     for (int i = 0; i < h; i++)
     {
@@ -36,10 +38,11 @@ while (Console.ReadKey().Key != ConsoleKey.Enter)
                 neighbourStates.Add(forest[i, j + 1].State);
 
             var newState = Spread(forest[i, j].State, neighbourStates);
-            forest[i, j].SetState(newState);
+            newForest[i, j] = new Cell(newState);
         }
     }
 
+    forest = newForest;
     grid.ClearGridDisplay();
     grid.ApplyForest(forest);
 }
