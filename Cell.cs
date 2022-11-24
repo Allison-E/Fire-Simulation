@@ -1,6 +1,4 @@
-﻿using System.Security.Cryptography;
-
-namespace Fire_Simulation;
+﻿namespace Fire_Simulation;
 
 /// <summary>
 /// A cell in the grid which may be an empty site, tree or fire.
@@ -8,14 +6,11 @@ namespace Fire_Simulation;
 internal class Cell
 {
     /// <summary>
-    /// Creates an instance of <see cref="Cell"/> with a random state
-    /// which would either be a tree or empty site.
+    /// Creates an instance of <see cref="Cell"/> which would be a tree.
     /// </summary>
     public Cell()
     {
-        var randomValue = RandomNumberGenerator.GetInt32(2);
-
-        State = (CellState)randomValue;
+        State = CellState.Tree;
     }
 
     /// <summary>
@@ -43,7 +38,7 @@ internal class Cell
     /// <remarks><![CDATA[Returns & for a tree, x for a fire or a space for
     /// an empty site]]>.</remarks>
     /// <returns>A character.</returns>
-    public char GetValue()
+    public char GetCharValue()
     {
         switch (State)
         {

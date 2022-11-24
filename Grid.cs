@@ -43,11 +43,9 @@ internal class Grid
         {
             for (int j = 0; j < Width; j++)
             {
-                Map[i, j] = forest[i, j].GetValue();
+                Map[i, j] = forest[i, j].GetCharValue();
             }
         }
-
-        Console.Write(this);
     }
 
     /// <summary>
@@ -71,26 +69,6 @@ internal class Grid
     }
 
     /// <summary>
-    /// Clears grid on display.
-    /// </summary>
-    /// <remarks>The cursor has to be on the same line as the
-    /// ending of this grid to work.</remarks>
-    public void ClearGridDisplay()
-    {
-        int i = 1;
-
-        while (i < Height)
-        {
-            if (i == 1)
-                Console.SetCursorPosition(0, Console.CursorTop);
-
-            Console.Write(new string(' ', Console.BufferWidth));
-            Console.SetCursorPosition(0, Console.CursorTop - 1);
-            i++;
-        }
-    }
-
-    /// <summary>
     /// Returns the <see cref="Grid.Map"/> as a string to be displayed.
     /// </summary>
     /// <returns>A string representation of the map.</returns>
@@ -100,18 +78,14 @@ internal class Grid
 
         for (int i = 0; i < Height; i++)
         {
-            builder.Append("\t|");
             for (int j = 0; j < Width; j++)
             {
                 builder.Append(Map[i, j]);
             }
 
-            if (i != Height - 1)
-                builder.Append("|\r\n");
-            else
-                builder.Append("|");
+            builder.Append("\r\n");
         }
-        return builder.ToString().TrimEnd();
+        return builder.ToString();
     }
 
     private void InitialiseMap()

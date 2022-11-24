@@ -3,21 +3,25 @@
 Console.Title = "Fire Simulation";
 Console.WriteLine("\tFIRE SIMULATION");
 Console.WriteLine(new string('-', 31));
-Console.WriteLine("Press any key to go to the next time step, Enter to end simulation.");
-Console.WriteLine();
+
 
 int h = 21;
 int w = 21;
 Cell[,] forest = new Cell[h, w];
 Grid grid = new(h, w);
+Weather weather = new();
 
-InitialiseDisplay();
+Initialize();
+Console.WriteLine(weather + "\r\n");
+Display();
 
 while (Console.ReadKey().Key != ConsoleKey.Enter)
 {
     if (!forest.Cast<Cell>().Any(c => c.State == CellState.Fire))
     {
-        Console.WriteLine("\r\n\r\nSimulation finished.");
+        Console.WriteLine(new string('=', 31));
+        Console.WriteLine("Simulation finished. Press any key to close.");
+        Console.ReadKey();
         break;
     }
 
@@ -52,11 +56,11 @@ while (Console.ReadKey().Key != ConsoleKey.Enter)
     }
 
     forest = newForest;
-    grid.ClearGridDisplay();
     grid.ApplyForest(forest);
+    Display();
 }
 
-void InitialiseDisplay()
+void Initialize()
 {
     for (int i = 0; i < h; i++)
     {
@@ -66,10 +70,17 @@ void InitialiseDisplay()
         }
     }
 
-    // Set central tree to a burning tree.
+    // Set the central tree to a burning tree.
     forest[h / 2, w / 2].SetState(CellState.Fire);
 
     grid.ApplyForest(forest);
+}
+
+void Display()
+{
+    Console.WriteLine("Press any key to go to the next time step, Enter to end simulation.");
+    Console.WriteLine();
+    Console.WriteLine(grid);
 }
 
 CellState Spread(CellState cellState, ICollection<CellState> neighbourStates)
@@ -77,10 +88,11 @@ CellState Spread(CellState cellState, ICollection<CellState> neighbourStates)
     if (neighbourStates.Any(state => state == CellState.Fire) && cellState == CellState.Tree)
     {
         // Either 0 or 1.
-        var caughtFireBit = RandomNumberGenerator.GetInt32(2);
+        var probabilityItCatchesFire = RandomNumberGenerator.GetInt32(1, 101);
+        probabilityItCatchesFire += weather.GetInfluence();
 
         // Tree caught fire by a chance of 50%.
-        if (caughtFireBit == 1)
+        if (probabilityItCatchesFire > 50)
             return CellState.Fire;
     }
 
